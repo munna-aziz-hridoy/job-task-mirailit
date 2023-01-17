@@ -5,7 +5,10 @@ const api = new WoocommerceRestApi({
   consumerKey: "ck_35f64c79ebe2cfd6979b6f81c103ff01135ae1b8",
   consumerSecret: "cs_1dd3842d9bdc656ace99007faef0bb09a4d34400",
   version: "wc/v3",
+  queryStringAuth: true,
 });
+
+// get products api
 
 export const getProducts = async (productAmmount) => {
   const response = await api.get("products", {
@@ -19,6 +22,8 @@ export const getProducts = async (productAmmount) => {
   }
 };
 
+// save prices api
+
 export const saveNewPrices = async (selectedProduct) => {
   console.log(selectedProduct);
   const data = {
@@ -29,7 +34,6 @@ export const saveNewPrices = async (selectedProduct) => {
     .post("products/batch", data)
     .then((res) => {
       console.log(res);
-      window.location.reload();
     })
     .catch((e) => console.log(e));
 };

@@ -1,22 +1,31 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { HiOutlinePencilAlt } from "react-icons/hi";
-import { SelectedProductContext } from "../App";
+import { ProductContext } from "../App";
 
 const TableCell = ({ product }) => {
   const [openEditField, setOpenEditField] = useState(false);
   const [errorText, setErrorText] = useState("");
-  const { selectedProduct, setSelectedProduct } = useContext(
-    SelectedProductContext
-  );
+  const { setSelectedProduct, setCloseAllFields, closeAllFields } =
+    useContext(ProductContext);
+
+  useEffect(() => {
+    if (closeAllFields) {
+      setOpenEditField(false);
+    }
+  }, [closeAllFields]);
+
+  // set selected product field and save input
 
   const handleInputChange = (e) => {
     const inputText = e.target.value;
     const regex = new RegExp("^[0-9]*$");
 
+    // check input is numbers only and not empty
+
     if (regex.test(inputText) && inputText !== "") {
       setSelectedProduct((prev) => {
         const isExists = prev.find((item) => item.id === product.id);
-        console.log(isExists);
+
         if (!isExists) {
           return [...prev, { id: product.id, price: inputText }];
         } else {
@@ -34,6 +43,8 @@ const TableCell = ({ product }) => {
 
   return (
     <tr className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
+      {/* table content */}
+
       <td
         scope="col"
         className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap "
@@ -53,6 +64,8 @@ const TableCell = ({ product }) => {
       <td className="  px-6 py-4 whitespace-nowrap text-center text-lg font-semibold capitalize">
         {product.name}
       </td>
+
+      {/* edit field */}
 
       <td className="text-gray-500  px-6 py-4 whitespace-nowrap text-center text-lg font-semibold min-w-[200px]">
         {openEditField ? (

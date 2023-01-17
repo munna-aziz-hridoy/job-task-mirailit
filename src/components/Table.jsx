@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { saveNewPrices } from "../api";
-import { SelectedProductContext } from "../App";
+import { ProductContext } from "../App";
 
 const Table = ({ children }) => {
   const [isInputValidate, setIsInputValidate] = useState(false);
-  const { selectedProduct, setSelectedProduct } = useContext(
-    SelectedProductContext
-  );
+  const { selectedProduct, setCloseAllFields } = useContext(ProductContext);
+
+  // check all input are validate
 
   useEffect(() => {
     if (selectedProduct.length > 0) {
@@ -25,9 +25,12 @@ const Table = ({ children }) => {
     }
   }, [selectedProduct]);
 
+  // save price function
+
   const handleSavePrice = async () => {
     if (isInputValidate) {
       await saveNewPrices(selectedProduct);
+      setCloseAllFields(true);
     } else if (selectedProduct.length === 0) {
       return toast.error("Nothing to save");
     } else {

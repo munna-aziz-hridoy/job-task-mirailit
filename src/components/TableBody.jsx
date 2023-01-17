@@ -1,9 +1,11 @@
-import React from "react";
-import useProducts from "../hooks/useProducts";
+import React, { useContext } from "react";
+import { ProductContext } from "../App";
+
 import TableCell from "./TableCell";
 
-const TableBody = ({ productAmmount }) => {
-  const { products, loading } = useProducts(productAmmount);
+const TableBody = () => {
+  const { products, loading, searchedProductItems } =
+    useContext(ProductContext);
 
   return (
     <tbody>
@@ -14,7 +16,7 @@ const TableBody = ({ productAmmount }) => {
           </td>
         </tr>
       ) : (
-        products.map((product) => (
+        searchedProductItems.map((product) => (
           <TableCell key={product.id} product={product} />
         ))
       )}
